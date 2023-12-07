@@ -161,7 +161,11 @@ _skipDelimiter:
 
 	mDisplayString OFFSET avgText
 
-	; TODO - calculate avgValue from sumValue
+	MOV		EAX, sumValue
+	MOV		EBX, INT_ARRAY_SIZE
+	CDQ
+	IDIV	EBX
+	MOV		avgValue, EAX
 
 	PUSH	avgValue
 	PUSH	OFFSET intString
@@ -292,7 +296,7 @@ WriteVal PROC
 	MOV		EDI, [EBP+8]
 	CLD
 
-
+	; TODO - fix no zero problem
 
 	MOV		ESI, [EBP+12]
 	CMP		ESI, 0
@@ -303,25 +307,24 @@ WriteVal PROC
 
 _skipNegation:
 
-	MOV		ECX, STRING_SIZE-2
 	MOV		EAX, 1
 	MOV		EBX, 10
 _loopDivisor:
-	IMUL		EBX
-	LOOP	_loopDivisor
-
+	IMUL	EBX
+	JO		_breakDivisorLoop
+	CMP		EAX, ESI
+	JLE		_loopDivisor
+_breakDivisorLoop:
+	IDIV	EBX
 	MOV		EBX, EAX
 
 _loopDigit:
 	MOV		EAX, ESI
-	CMP		EBX, EAX
-	JG		_skipStore
 	CDQ
 	IDIV	EBX
 	MOV		ESI, EDX
 	ADD		EAX, ASCII_0
 	STOSB
-_skipStore:
 	CMP		EBX, 1
 	JBE		_endLoopDigit
 	MOV		EAX, EBX
