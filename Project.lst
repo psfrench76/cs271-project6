@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.37.32825.0	    12/07/23 16:19:51
+Microsoft (R) Macro Assembler Version 14.37.32825.0	    12/07/23 16:31:30
 &String Converter   (Proj6_frenchp.asm			     Page 1 - 1
 
 
@@ -499,7 +499,7 @@ Microsoft (R) Macro Assembler Version 14.37.32825.0	    12/07/23 16:19:51
  000001C8  55				PUSH	EBP
  000001C9  8B EC			MOV		EBP, ESP
  000001CB  60				PUSHAD
-
+					; TODO - bug: -2147483648 displayed as -0 (but value is correct in integer representation)
 					; Set EDI to intermediate string array address
  000001CC  8B 7D 08			MOV		EDI, [EBP+8]
  000001CF  FC				CLD
@@ -607,7 +607,7 @@ Microsoft (R) Macro Assembler Version 14.37.32825.0	    12/07/23 16:19:51
 
 
 				END main
-Microsoft (R) Macro Assembler Version 14.37.32825.0	    12/07/23 16:19:51
+Microsoft (R) Macro Assembler Version 14.37.32825.0	    12/07/23 16:31:30
 &String Converter   (Proj6_frenchp.asm			     Symbols 2 - 1
 
 

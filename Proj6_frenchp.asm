@@ -338,7 +338,7 @@ WriteVal PROC
 	PUSH	EBP
 	MOV		EBP, ESP
 	PUSHAD
-	; TODO - bug: -2147483648 displayed as -0 (but value is correct in integer representation)
+
 	; Set EDI to intermediate string array address
 	MOV		EDI, [EBP+8]
 	CLD
@@ -353,23 +353,23 @@ WriteVal PROC
 	NEG		ESI
 _skipNegation:
 
-	; Count number of digits in integer, and build 10's place multiplier in EAX
+	; Count number of digits in integer, and build 10's place divisor in EAX
 	MOV		EAX, 1
 	MOV		EBX, 10
 _loopDivisor:
 	IMUL	EBX
 
-	; Once the 10's place multiplier is bigger than the integer, or overflows, stop
+	; Once the 10's place divisor is bigger than the integer, or overflows, stop
 	JO		_breakDivisorLoop
 	CMP		EAX, ESI
 	JLE		_loopDivisor
 
-	; Subtract one digit, and move 10's place multiplier to EBX
+	; Subtract one digit, and move 10's place divisor to EBX
 _breakDivisorLoop:
 	IDIV	EBX
 	MOV		EBX, EAX
 
-	; get integer from ESI, divide by 10's place multiplier to get largest digit
+	; get integer from ESI, divide by 10's place divisor to get largest digit
 _loopDigit:
 	MOV		EAX, ESI
 	CDQ
@@ -380,7 +380,7 @@ _loopDigit:
 	ADD		EAX, ASCII_0
 	STOSB
 
-	; Unless we're already at the last digit, divide 10's place multiplier by 10
+	; Unless we're already at the last digit, divide 10's place divisor by 10
 	CMP		EBX, 1
 	JBE		_endLoopDigit
 	MOV		EAX, EBX
